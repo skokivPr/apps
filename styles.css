@@ -1,0 +1,317 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f7f6;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+}
+
+#app {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+}
+
+h1 {
+    color: #00796b;
+    /* Teal accent */
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #555;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
+
+#scanner-container {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    /* Max width for video */
+    margin: 20px auto;
+    background-color: #000;
+    /* Black background for video element */
+    border-radius: 6px;
+    overflow: hidden;
+    /* Ensures video corners are rounded if video itself isn't */
+}
+
+#video-preview {
+    display: none;
+    /* Hidden by default */
+    width: 100%;
+    height: auto;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    /* Slightly rounded corners for the video feed */
+    transform: scaleX(-1);
+    /* Mirror mode for user-facing camera, remove if using environment */
+}
+
+.overlay-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    display: none;
+    /* Hidden by default, shown when video is active */
+}
+
+
+#controls {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    /* Space between buttons */
+}
+
+button {
+    background-color: #00796b;
+    /* Teal */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+button:hover,
+button:focus {
+    background-color: #004d40;
+    /* Darker Teal */
+    outline: none;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+#stopButton {
+    background-color: #d32f2f;
+    /* Red for stop/cancel actions */
+}
+
+#stopButton:hover,
+#stopButton:focus {
+    background-color: #b71c1c;
+    /* Darker Red */
+}
+
+#result-container {
+    margin-top: 20px;
+    text-align: left;
+    padding: 15px;
+    background-color: #e8f5e9;
+    /* Light green background for result */
+    border-left: 5px solid #4caf50;
+    /* Green accent border */
+    border-radius: 4px;
+}
+
+#barcode-result {
+    font-family: "Courier New", Courier, monospace;
+    white-space: pre-wrap;
+    word-break: break-all;
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    min-height: 30px;
+    /* Ensure it has some height even when empty */
+}
+
+#status-message {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 0.95em;
+    min-height: 20px;
+    /* Ensure it has some height */
+}
+
+#status-message.error {
+    background-color: #ffebee;
+    /* Light red for errors */
+    color: #c62828;
+    /* Darker red text for errors */
+    border: 1px solid #ef9a9a;
+}
+
+#status-message.success {
+    background-color: #e8f5e9;
+    /* Light green for success */
+    color: #2e7d32;
+    /* Darker green text for success */
+    border: 1px solid #a5d6a7;
+}
+
+#status-message.info {
+    background-color: #e3f2fd;
+    /* Light blue for info */
+    color: #1565c0;
+    /* Darker blue text for info */
+    border: 1px solid #90caf9;
+}
+
+#scan-history {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+}
+
+#scan-history h2 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.2rem;
+}
+
+#clearHistoryButton {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+}
+
+#clearHistoryButton:hover {
+    background-color: #c82333;
+}
+
+#history-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background-color: white;
+    margin-bottom: 0.5rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.history-item .barcode {
+    font-family: monospace;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.history-item .timestamp {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Camera controls */
+.camera-label {
+    margin-right: 0.5rem;
+    font-weight: 500;
+}
+
+.camera-select {
+    padding: 0.5rem;
+    margin-right: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 1rem;
+}
+
+.camera-select:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+}
+
+.switch-camera-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 1rem;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.switch-camera-button:hover {
+    background-color: #45a049;
+}
+
+.switch-camera-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    .camera-select {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+
+    .switch-camera-button {
+        width: 100%;
+        justify-content: center;
+        margin: 0.5rem 0;
+    }
+
+    #controls {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .camera-label {
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    body {
+        padding: 10px;
+    }
+
+    #app {
+        padding: 15px;
+    }
+
+    button {
+        padding: 10px 15px;
+        font-size: 0.9em;
+    }
+
+    h1 {
+        font-size: 1.8em;
+    }
+}
